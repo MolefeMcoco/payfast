@@ -18,7 +18,10 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/payfast/eng/process", formData);
+      const response = await axios.post(
+        "https://sandbox.payfast.co.za/eng/process",
+        formData
+      );
       console.log(response);
       // Optionally, redirect to PayFast payment page
       // window.location.replace(response.data);

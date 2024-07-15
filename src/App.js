@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import { useState } from "react";
+import axios from "axios";
 function App() {
+  const [formData, setFormData] = useState({
+    merchant_id: "10026352",
+    merchant_key: "cineal5irguom",
+    amount: "",
+    item_name: "Product Name",
+    email_confirmation: 1,
+    confirmation_address: "molefe@mmwebdesign.co.za",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/payfast/eng/process", formData);
+      console.log(response);
+      // Optionally, redirect to PayFast payment page
+      // window.location.replace(response.data);
+    } catch (error) {
+      console.error("Error submitting payment:", error);
+      // Handle error
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="amount"
+        value={formData.amount}
+        onChange={handleChange}
+        placeholder="Amount"
+        required
+      />
+      <input type="submit" value="Pay Now" />
+    </form>
   );
 }
 
